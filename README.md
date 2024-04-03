@@ -1,6 +1,6 @@
 ## Ulabinaa
 
-Ulabinaa app
+Ulabinaa Frappe App
 
 #### License
 
