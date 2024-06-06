@@ -1,0 +1,33 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2024-06-01 21:26:13.108785",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2024-06-06 16:47:28.826827",
+ "modified_by": "Administrator",
+ "module": "Ulabinaa",
+ "name": "Forecasted Transactions Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Journal Entry",
+ "reference_report": "",
+ "report_name": "Forecasted Transactions Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Auditor"
+  }
+ ]
+}
