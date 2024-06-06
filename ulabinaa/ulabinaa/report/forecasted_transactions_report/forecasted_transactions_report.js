@@ -26,7 +26,7 @@ frappe.query_reports["Forecasted Transactions Report"] = {
                    "wildcard_filter": 0
                   },
                   {
-                   "default": "0",
+                   "default": "1",
                    "fieldname": "filter_include_submitted",
                    "fieldtype": "Check",
                    "label": "Include Submitted Transactions",
