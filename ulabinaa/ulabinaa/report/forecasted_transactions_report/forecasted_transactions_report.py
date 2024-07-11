@@ -6,40 +6,42 @@ from erpnext.controllers.stock_controller import get_accounting_ledger_preview
 
 
 def execute(filters=None):
-    columns, data = [], []
+    data = []
     columns = create_columns()
-    # TODO: remove the sql query code
-    '''
+    show_accounting_ledger_preview_bulk(filters=filters)
+
     sql = f"""
-            select je.posting_date,
-                jea.account,
-                jea.debit,
-                jea.credit,
-                je.voucher_type,
-                jea.party_type,
-                jea.party,
-                jea.project,
-                jea.cost_center,
-                je.name as voucher_id,
-                je.remark
-                from `tabJournal Entry` as je
-                join `tabJournal Entry Account` as jea
-                    on je.name = jea.parent
-                WHERE je.company=%(filter_company)s
-                    AND je.`posting_date` BETWEEN %(filter_from_date)s and %(filter_to_date)s
-                ORDER BY je.posting_date
+            SELECT gl.posting_date,
+                gl.account,
+                gl.debit,
+                gl.credit,
+                gl.voucher_type,
+                gl.party_type,
+                gl.party,
+                gl.against,
+                gl.against_voucher_type,
+                gl.against_voucher as against_voucher_id,
+                gl.project,
+                gl.cost_center,
+                gl.voucher_no as voucher_id,
+                gl.remarks as remark,
+                gl.voucher_subtype
+                FROM `tabGL Entry` AS gl
+                WHERE gl.company=%(filter_company)s
+                    AND gl.voucher_type IN ("Purchase Invoice", "Payment Entry", "Journal Entry")
+                    AND gl.posting_date BETWEEN %(filter_from_date)s AND %(filter_to_date)s
+                ORDER BY gl.posting_date, gl.creation 
         """
     data = frappe.db.sql(sql, values={
         "filter_company": filters['filter_company'],
         "filter_from_date": filters['filter_from_date'],
         "filter_to_date": filters['filter_to_date'],
     }, as_dict=1)
-    '''
-    result = show_accounting_ledger_preview_bulk(filters=filters)
     frappe.db.rollback()
+    """
     for record in result['gl_data']:
         data.append(add_mapped_gl_record(record, result['gl_columns']))
-
+    """
     # data.sort(key=lambda x: x[get_column_index(result['gl_columns'], 'Posting Date')], reverse=False)
 
     return columns, data
@@ -50,17 +52,17 @@ def show_accounting_ledger_preview_bulk(filters):
     filters['company'] = filters['filter_company']
     doctypes = ["Purchase Invoice", "Payment Entry", "Journal Entry"]
     gl_columns, gl_data = [], []
-    for doctype in doctypes:
-        docs_filters = {
-            'company': filters['filter_company'],
-            'posting_date': ['between', (filters['filter_from_date'],
-                                         filters['filter_to_date'])]
-        }
-        if filters['filter_include_submitted'] == 'No':
-            docs_filters['docstatus'] = ["=", 0]
-        else:
-            docs_filters['docstatus'] = ["<", 2]
+    docs_filters = {
+        'company': filters['filter_company'],
+        'posting_date': ['between', (filters['filter_from_date'],
+                                     filters['filter_to_date'])]
+    }
+    if filters['filter_include_submitted'] == 'No':
+        docs_filters['docstatus'] = ["=", 0]
+    else:
+        docs_filters['docstatus'] = ["<", 2]
 
+    for doctype in doctypes:
         docs = frappe.db.get_list(doctype,
                                   filters=docs_filters,
                                   order_by='posting_date')
@@ -68,7 +70,8 @@ def show_accounting_ledger_preview_bulk(filters):
             result = show_accounting_ledger_preview_per_transaction(filters=filters,
                                                                     doctype=doctype,
                                                                     docname=doc.name)
-            gl_columns = result['gl_columns']
+            if not gl_columns:
+                gl_columns = result['gl_columns']
             gl_data.extend(result['gl_data'])
 
     return {"gl_columns": gl_columns, "gl_data": gl_data}
@@ -95,6 +98,7 @@ def get_column_index(gl_columns, column_name):
 
 
 def add_mapped_gl_record(gl_record, gl_columns):
+    # TODO: remove this function; not used
     if not gl_record:
         return None
     else:
@@ -109,8 +113,6 @@ def add_mapped_gl_record(gl_record, gl_columns):
             "cost_center": gl_record[get_column_index(gl_columns, 'Cost Center')],
             "voucher_type": gl_record[get_column_index(gl_columns, 'Against Voucher Type')],
             "voucher_id": gl_record[get_column_index(gl_columns, 'Against Voucher')],
-            "project": None,  # TODO: drop the field because not available in the preview method's columns
-            "remark": None  # TODO: drop the field because not available in the preview method's columns
         }
 
 
@@ -183,6 +185,30 @@ def create_columns():
             "fieldname": "remark",
             "fieldtype": "Data",
             "label": "Remarks",
+            "width": 100
+        },
+        {
+            "fieldname": "voucher_subtype",
+            "fieldtype": "Data",
+            "label": "Voucher Subtype",
+            "width": 100
+        },
+        {
+            "fieldname": "against",
+            "fieldtype": "Data",
+            "label": "Against",
+            "width": 100
+        },
+        {
+            "fieldname": "against_voucher_type",
+            "fieldtype": "Data",
+            "label": "Against Voucher Type",
+            "width": 100
+        },
+        {
+            "fieldname": "against_voucher_id",
+            "fieldtype": "Data",
+            "label": "Against Voucher ID",
             "width": 100
         }
     ]
