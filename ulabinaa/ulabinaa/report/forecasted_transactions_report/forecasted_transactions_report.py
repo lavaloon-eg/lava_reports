@@ -8,10 +8,13 @@ from erpnext.controllers.stock_controller import get_accounting_ledger_preview
 def execute(filters=None):
     data = []
     columns = create_columns()
+    frappe.db.begin()
     show_accounting_ledger_preview_bulk(filters=filters)
 
     sql = f"""
-            SELECT gl.posting_date,
+            SELECT (CASE WHEN gl.name LIKE %(status_id_key)s THEN 'Submitted'
+                        ELSE 'Draft' END) as voucher_status,
+                gl.posting_date,
                 gl.account,
                 gl.debit,
                 gl.credit,
@@ -28,22 +31,21 @@ def execute(filters=None):
                 gl.voucher_subtype
                 FROM `tabGL Entry` AS gl
                 WHERE gl.company=%(filter_company)s
-                    AND gl.voucher_type IN ("Purchase Invoice", "Payment Entry", "Journal Entry")
-                    AND gl.posting_date BETWEEN %(filter_from_date)s AND %(filter_to_date)s
-                ORDER BY gl.posting_date, gl.creation 
-        """
+                """
+    if filters['filter_include_submitted'] == 'No':
+        sql += F""" AND gl.name NOT LIKE %(status_id_key)s """
+
+    sql += f""" AND gl.voucher_type IN ("Purchase Invoice", "Payment Entry", "Journal Entry")
+                AND gl.posting_date BETWEEN %(filter_from_date)s AND %(filter_to_date)s
+                ORDER BY gl.posting_date DESC, gl.creation DESC
+            """
     data = frappe.db.sql(sql, values={
         "filter_company": filters['filter_company'],
         "filter_from_date": filters['filter_from_date'],
         "filter_to_date": filters['filter_to_date'],
+        "status_id_key": "ACC-%"
     }, as_dict=1)
     frappe.db.rollback()
-    """
-    for record in result['gl_data']:
-        data.append(add_mapped_gl_record(record, result['gl_columns']))
-    """
-    # data.sort(key=lambda x: x[get_column_index(result['gl_columns'], 'Posting Date')], reverse=False)
-
     return columns, data
 
 
@@ -57,10 +59,8 @@ def show_accounting_ledger_preview_bulk(filters):
         'posting_date': ['between', (filters['filter_from_date'],
                                      filters['filter_to_date'])]
     }
-    if filters['filter_include_submitted'] == 'No':
-        docs_filters['docstatus'] = ["=", 0]
-    else:
-        docs_filters['docstatus'] = ["<", 2]
+
+    docs_filters['docstatus'] = ["=", 0]
 
     for doctype in doctypes:
         docs = frappe.db.get_list(doctype,
@@ -118,7 +118,11 @@ def add_mapped_gl_record(gl_record, gl_columns):
 
 def create_columns():
     return [
-
+        {"fieldname": "voucher_status",
+         "fieldtype": "Data",
+         "label": "Status",
+         "width": 100
+         },
         {
             "fieldname": "posting_date",
             "fieldtype": "Date",
