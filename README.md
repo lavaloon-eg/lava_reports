@@ -1,7 +1,7 @@
-## Ulabinaa
+## lava_reports
 
-Ulabinaa Frappe App
+Additional reports on ERPNext
 
 #### License
 
-mit
+AGPL
