@@ -1,9 +1,9 @@
 [project]
-name = "ulabinaa"
+name = "lava_reports"
 authors = [
     { name = "lavaloon", email = "lavaloon@info.com"}
 ]
-description = "Ulabinaa Frappe App"
+description = "Additional reports on ERPNext"
 requires-python = ">=3.10"
 readme = "README.md"
 dynamic = ["version"]
