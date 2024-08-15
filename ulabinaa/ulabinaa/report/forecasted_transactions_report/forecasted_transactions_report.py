@@ -6,32 +6,44 @@ from erpnext.controllers.stock_controller import get_accounting_ledger_preview
 
 
 def execute(filters=None):
-    columns, data = [], []
+    data = []
     columns = create_columns()
-    sql = f"""
-            select je.posting_date,
-                jea.account,
-                jea.debit,
-                jea.credit,
-                je.voucher_type,
-                jea.party_type,
-                jea.party,
-                jea.project,
-                jea.cost_center,
-                je.name as voucher_id,
-                je.remark
-                from `tabJournal Entry` as je
-                join `tabJournal Entry Account` as jea
-                    on je.name = jea.parent
-                WHERE je.`posting_date` BETWEEN %(filter_from_date)s and %(filter_to_date)s
-                AND je.company=%(filter_company)s
-                ORDER BY je.posting_date
-        """
+    frappe.db.begin()
     show_accounting_ledger_preview_bulk(filters=filters)
+
+    sql = f"""
+            SELECT (CASE WHEN gl.name LIKE %(status_id_key)s THEN 'Submitted'
+                        ELSE 'Draft' END) as voucher_status,
+                gl.posting_date,
+                gl.account,
+                gl.debit,
+                gl.credit,
+                gl.voucher_type,
+                gl.party_type,
+                gl.party,
+                gl.against,
+                gl.against_voucher_type,
+                gl.against_voucher as against_voucher_id,
+                gl.project,
+                gl.cost_center,
+                gl.voucher_no as voucher_id,
+                gl.remarks as remark,
+                gl.voucher_subtype
+                FROM `tabGL Entry` AS gl
+                WHERE gl.company=%(filter_company)s
+                """
+    if filters['filter_include_submitted'] == 'No':
+        sql += F""" AND gl.name NOT LIKE %(status_id_key)s """
+
+    sql += f""" AND gl.voucher_type IN ("Purchase Invoice", "Payment Entry", "Journal Entry")
+                AND gl.posting_date BETWEEN %(filter_from_date)s AND %(filter_to_date)s
+                ORDER BY gl.posting_date DESC, gl.creation DESC
+            """
     data = frappe.db.sql(sql, values={
         "filter_company": filters['filter_company'],
         "filter_from_date": filters['filter_from_date'],
         "filter_to_date": filters['filter_to_date'],
+        "status_id_key": "ACC-%"
     }, as_dict=1)
     frappe.db.rollback()
     return columns, data
@@ -40,19 +52,17 @@ def execute(filters=None):
 def show_accounting_ledger_preview_bulk(filters):
     filters['include_dimensions'] = 1
     filters['company'] = filters['filter_company']
-    doctypes = ["Purchase Invoice", "Payment Entry"]
+    doctypes = ["Purchase Invoice", "Payment Entry", "Journal Entry"]
     gl_columns, gl_data = [], []
-    for doctype in doctypes:
-        docs_filters = {
-            'company': filters['filter_company'],
-            'posting_date': ['between', filters['filter_from_date'],
-                             filters['filter_to_date']]
-        }
-        if filters['filter_include_submitted'] == 0:
-            docs_filters['docstatus'] = 0
-        else:
-            docs_filters['docstatus'] = ["<", 2]
+    docs_filters = {
+        'company': filters['filter_company'],
+        'posting_date': ['between', (filters['filter_from_date'],
+                                     filters['filter_to_date'])]
+    }
 
+    docs_filters['docstatus'] = ["=", 0]
+
+    for doctype in doctypes:
         docs = frappe.db.get_list(doctype,
                                   filters=docs_filters,
                                   order_by='posting_date')
@@ -61,8 +71,8 @@ def show_accounting_ledger_preview_bulk(filters):
                                                                     doctype=doctype,
                                                                     docname=doc.name)
             if not gl_columns:
-                gl_columns = result.gl_columns
-            gl_data.append(result.gl_data)
+                gl_columns = result['gl_columns']
+            gl_data.extend(result['gl_data'])
 
     return {"gl_columns": gl_columns, "gl_data": gl_data}
 
@@ -74,9 +84,45 @@ def show_accounting_ledger_preview_per_transaction(filters, doctype, docname):
     return {"gl_columns": gl_columns, "gl_data": gl_data}
 
 
+def get_column_index(gl_columns, column_name):
+    index = -1
+    for column in gl_columns:
+        index += 1
+        if column_name.lower() in ("debit", "credit"):
+            if column_name.lower() in column.get("name").lower():
+                return index
+        else:
+            if column.get("name").lower() == column_name.lower():
+                return index
+    return None
+
+
+def add_mapped_gl_record(gl_record, gl_columns):
+    # TODO: remove this function; not used
+    if not gl_record:
+        return None
+    else:
+        return {
+            "posting_date": gl_record[get_column_index(gl_columns, 'Posting Date')],
+            "account": gl_record[get_column_index(gl_columns, 'Account')],
+            "debit": gl_record[get_column_index(gl_columns, 'debit')],
+            "credit": gl_record[get_column_index(gl_columns, 'credit')],
+            "against_account": gl_record[get_column_index(gl_columns, 'Against Account')],
+            "party_type": gl_record[get_column_index(gl_columns, 'Party Type')],
+            "party": gl_record[get_column_index(gl_columns, 'Party')],
+            "cost_center": gl_record[get_column_index(gl_columns, 'Cost Center')],
+            "voucher_type": gl_record[get_column_index(gl_columns, 'Against Voucher Type')],
+            "voucher_id": gl_record[get_column_index(gl_columns, 'Against Voucher')],
+        }
+
+
 def create_columns():
     return [
-
+        {"fieldname": "voucher_status",
+         "fieldtype": "Data",
+         "label": "Status",
+         "width": 100
+         },
         {
             "fieldname": "posting_date",
             "fieldtype": "Date",
@@ -143,6 +189,30 @@ def create_columns():
             "fieldname": "remark",
             "fieldtype": "Data",
             "label": "Remarks",
+            "width": 100
+        },
+        {
+            "fieldname": "voucher_subtype",
+            "fieldtype": "Data",
+            "label": "Voucher Subtype",
+            "width": 100
+        },
+        {
+            "fieldname": "against",
+            "fieldtype": "Data",
+            "label": "Against",
+            "width": 100
+        },
+        {
+            "fieldname": "against_voucher_type",
+            "fieldtype": "Data",
+            "label": "Against Voucher Type",
+            "width": 100
+        },
+        {
+            "fieldname": "against_voucher_id",
+            "fieldtype": "Data",
+            "label": "Against Voucher ID",
             "width": 100
         }
     ]
