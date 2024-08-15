@@ -1,7 +1,7 @@
 [project]
 name = "lava_reports"
 authors = [
-    { name = "lavaloon", email = "lavaloon@info.com"}
+    { name = "lavaloon", email = "info@lavaloon.com"}
 ]
 description = "Additional reports on ERPNext"
 requires-python = ">=3.10"

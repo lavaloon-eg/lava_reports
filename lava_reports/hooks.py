@@ -1,7 +1,7 @@
-app_name = "ulabinaa"
-app_title = "Ulabinaa"
+app_name = "lava_reports"
+app_title = "lava_reports"
 app_publisher = "lavaloon"
-app_description = "Ulabinaa app"
+app_description = "lava_reports app"
 app_email = "lavaloon@info.com"
 app_license = "mit"
 # required_apps = []
@@ -10,15 +10,15 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/ulabinaa/css/ulabinaa.css"
-# app_include_js = "/assets/ulabinaa/js/ulabinaa.js"
+# app_include_css = "/assets/lava_reports/css/lava_reports.css"
+# app_include_js = "/assets/lava_reports/js/lava_reports.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/ulabinaa/css/ulabinaa.css"
-# web_include_js = "/assets/ulabinaa/js/ulabinaa.js"
+# web_include_css = "/assets/lava_reports/css/lava_reports.css"
+# web_include_js = "/assets/lava_reports/js/lava_reports.js"
 
 # include custom scss in every website theme (without file extension ".scss")
-# website_theme_scss = "ulabinaa/public/scss/website"
+# website_theme_scss = "lava_reports/public/scss/website"
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
@@ -36,7 +36,7 @@ app_license = "mit"
 # Svg Icons
 # ------------------
 # include app icons in desk
-# app_include_icons = "ulabinaa/public/icons.svg"
+# app_include_icons = "lava_reports/public/icons.svg"
 
 # Home Pages
 # ----------
@@ -60,43 +60,43 @@ app_license = "mit"
 
 # add methods and filters to jinja environment
 # jinja = {
-# 	"methods": "ulabinaa.utils.jinja_methods",
-# 	"filters": "ulabinaa.utils.jinja_filters"
+# 	"methods": "lava_reports.utils.jinja_methods",
+# 	"filters": "lava_reports.utils.jinja_filters"
 # }
 
 # Installation
 # ------------
 
-# before_install = "ulabinaa.install.before_install"
-# after_install = "ulabinaa.install.after_install"
+# before_install = "lava_reports.install.before_install"
+# after_install = "lava_reports.install.after_install"
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "ulabinaa.uninstall.before_uninstall"
-# after_uninstall = "ulabinaa.uninstall.after_uninstall"
+# before_uninstall = "lava_reports.uninstall.before_uninstall"
+# after_uninstall = "lava_reports.uninstall.after_uninstall"
 
 # Integration Setup
 # ------------------
 # To set up dependencies/integrations with other apps
 # Name of the app being installed is passed as an argument
 
-# before_app_install = "ulabinaa.utils.before_app_install"
-# after_app_install = "ulabinaa.utils.after_app_install"
+# before_app_install = "lava_reports.utils.before_app_install"
+# after_app_install = "lava_reports.utils.after_app_install"
 
 # Integration Cleanup
 # -------------------
 # To clean up dependencies/integrations with other apps
 # Name of the app being uninstalled is passed as an argument
 
-# before_app_uninstall = "ulabinaa.utils.before_app_uninstall"
-# after_app_uninstall = "ulabinaa.utils.after_app_uninstall"
+# before_app_uninstall = "lava_reports.utils.before_app_uninstall"
+# after_app_uninstall = "lava_reports.utils.after_app_uninstall"
 
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
 
-# notification_config = "ulabinaa.notifications.get_notification_config"
+# notification_config = "lava_reports.notifications.get_notification_config"
 
 # Permissions
 # -----------
@@ -135,39 +135,39 @@ app_license = "mit"
 
 # scheduler_events = {
 # 	"all": [
-# 		"ulabinaa.tasks.all"
+# 		"lava_reports.tasks.all"
 # 	],
 # 	"daily": [
-# 		"ulabinaa.tasks.daily"
+# 		"lava_reports.tasks.daily"
 # 	],
 # 	"hourly": [
-# 		"ulabinaa.tasks.hourly"
+# 		"lava_reports.tasks.hourly"
 # 	],
 # 	"weekly": [
-# 		"ulabinaa.tasks.weekly"
+# 		"lava_reports.tasks.weekly"
 # 	],
 # 	"monthly": [
-# 		"ulabinaa.tasks.monthly"
+# 		"lava_reports.tasks.monthly"
 # 	],
 # }
 
 # Testing
 # -------
 
-# before_tests = "ulabinaa.install.before_tests"
+# before_tests = "lava_reports.install.before_tests"
 
 # Overriding Methods
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "ulabinaa.event.get_events"
+# 	"frappe.desk.doctype.event.event.get_events": "lava_reports.event.get_events"
 # }
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
 # override_doctype_dashboards = {
-# 	"Task": "ulabinaa.task.get_dashboard_data"
+# 	"Task": "lava_reports.task.get_dashboard_data"
 # }
 
 # exempt linked doctypes from being automatically cancelled
@@ -181,13 +181,13 @@ app_license = "mit"
 
 # Request Events
 # ----------------
-# before_request = ["ulabinaa.utils.before_request"]
-# after_request = ["ulabinaa.utils.after_request"]
+# before_request = ["lava_reports.utils.before_request"]
+# after_request = ["lava_reports.utils.after_request"]
 
 # Job Events
 # ----------
-# before_job = ["ulabinaa.utils.before_job"]
-# after_job = ["ulabinaa.utils.after_job"]
+# before_job = ["lava_reports.utils.before_job"]
+# after_job = ["lava_reports.utils.after_job"]
 
 # User Data Protection
 # --------------------
@@ -217,7 +217,7 @@ app_license = "mit"
 # --------------------------------
 
 # auth_hooks = [
-# 	"ulabinaa.auth.validate"
+# 	"lava_reports.auth.validate"
 # ]
 
 # Automatically update python controller files with type annotations for this app.
