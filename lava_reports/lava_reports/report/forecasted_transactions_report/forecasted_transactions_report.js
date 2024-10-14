@@ -12,6 +12,15 @@ frappe.query_reports["Forecasted Transactions Report"] = {
                    "wildcard_filter": 0
                   },
                   {
+                   "fieldname": "filter_accounts",
+                   "fieldtype": "MultiSelectList",
+                   "label": "Accounts",
+                   "wildcard_filter": 0,
+                   get_data: function(txt) {
+                      return frappe.db.get_link_options("Account", txt);
+                   }
+                  },
+                  {
                    "fieldname": "filter_from_date",
                    "fieldtype": "Date",
                    "label": "From Date",
