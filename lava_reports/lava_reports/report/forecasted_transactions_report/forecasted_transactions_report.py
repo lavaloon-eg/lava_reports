@@ -35,7 +35,7 @@ def execute(filters=None):
     if filters['filter_include_submitted'] == 'No':
         sql += F""" AND gl.name NOT LIKE %(status_id_key)s """
 
-    if filters['filter_accounts']:
+    if filters.get('filter_accounts'):
         sql += f""" AND gl.account IN %(filter_accounts)s
                 """
 
@@ -47,7 +47,7 @@ def execute(filters=None):
         "filter_company": filters['filter_company'],
         "filter_from_date": filters['filter_from_date'],
         "filter_to_date": filters['filter_to_date'],
-        "filter_accounts": filters['filter_accounts'],
+        "filter_accounts": filters.get('filter_accounts'),
         "status_id_key": "ACC-%"
     }, as_dict=1)
     frappe.db.rollback()
