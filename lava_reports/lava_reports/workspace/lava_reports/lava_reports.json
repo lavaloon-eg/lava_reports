@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Lava Reports",
  "links": [],
- "modified": "2024-10-13 12:43:21.386053",
+ "modified": "2024-10-15 14:12:13.048187",
  "modified_by": "Administrator",
  "module": "lava_reports",
  "name": "Lava Reports",
@@ -22,7 +22,17 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Auditor"
+  }
+ ],
  "sequence_id": 1.0,
  "shortcuts": [
   {
