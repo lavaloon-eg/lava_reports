@@ -9,7 +9,11 @@ def execute(filters=None):
     data = []
     columns = create_columns()
     frappe.db.begin()
-    show_accounting_ledger_preview_bulk(filters=filters)
+    try:
+        show_accounting_ledger_preview_bulk(filters=filters)
+    except Exception as e:
+        frappe.db.rollback()
+        frappe.throw(str(e))
 
     sql = f"""
             SELECT (CASE WHEN gl.name LIKE %(status_id_key)s THEN 'Submitted'
