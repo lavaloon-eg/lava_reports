@@ -11,9 +11,8 @@ def execute(filters=None):
     frappe.db.begin()
     try:
         show_accounting_ledger_preview_bulk(filters=filters)
-    except Exception as e:
+    finally:
         frappe.db.rollback()
-        frappe.throw(str(e))
 
     sql = f"""
             SELECT (CASE WHEN gl.name LIKE %(status_id_key)s THEN 'Submitted'
@@ -54,7 +53,6 @@ def execute(filters=None):
         "filter_accounts": filters.get('filter_accounts'),
         "status_id_key": "ACC-%"
     }, as_dict=1)
-    frappe.db.rollback()
     return columns, data
 
 
