@@ -9,48 +9,49 @@ def execute(filters=None):
     data = []
     columns = create_columns()
     frappe.db.begin()
-    show_accounting_ledger_preview_bulk(filters=filters)
-
-    sql = f"""
-            SELECT (CASE WHEN gl.name LIKE %(status_id_key)s THEN 'Submitted'
-                        ELSE 'Draft' END) as voucher_status,
-                gl.posting_date,
-                gl.account,
-                gl.debit,
-                gl.credit,
-                gl.voucher_type,
-                gl.party_type,
-                gl.party,
-                gl.against,
-                gl.against_voucher_type,
-                gl.against_voucher as against_voucher_id,
-                gl.project,
-                gl.cost_center,
-                gl.voucher_no as voucher_id,
-                gl.remarks as remark,
-                gl.voucher_subtype
-                FROM `tabGL Entry` AS gl
-                WHERE gl.company=%(filter_company)s
+    try:
+        show_accounting_ledger_preview_bulk(filters=filters)
+        sql = f"""
+                SELECT (CASE WHEN gl.name LIKE %(status_id_key)s THEN 'Submitted'
+                            ELSE 'Draft' END) as voucher_status,
+                    gl.posting_date,
+                    gl.account,
+                    gl.debit,
+                    gl.credit,
+                    gl.voucher_type,
+                    gl.party_type,
+                    gl.party,
+                    gl.against,
+                    gl.against_voucher_type,
+                    gl.against_voucher as against_voucher_id,
+                    gl.project,
+                    gl.cost_center,
+                    gl.voucher_no as voucher_id,
+                    gl.remarks as remark,
+                    gl.voucher_subtype
+                    FROM `tabGL Entry` AS gl
+                    WHERE gl.company=%(filter_company)s
+                    """
+        if filters['filter_include_submitted'] == 'No':
+            sql += F""" AND gl.name NOT LIKE %(status_id_key)s """
+    
+        if filters.get('filter_accounts'):
+            sql += f""" AND gl.account IN %(filter_accounts)s
+                    """
+    
+        sql += f""" AND gl.voucher_type IN ("Purchase Invoice", "Payment Entry", "Journal Entry")
+                    AND gl.posting_date BETWEEN %(filter_from_date)s AND %(filter_to_date)s
+                    ORDER BY gl.posting_date DESC, gl.creation DESC
                 """
-    if filters['filter_include_submitted'] == 'No':
-        sql += F""" AND gl.name NOT LIKE %(status_id_key)s """
-
-    if filters.get('filter_accounts'):
-        sql += f""" AND gl.account IN %(filter_accounts)s
-                """
-
-    sql += f""" AND gl.voucher_type IN ("Purchase Invoice", "Payment Entry", "Journal Entry")
-                AND gl.posting_date BETWEEN %(filter_from_date)s AND %(filter_to_date)s
-                ORDER BY gl.posting_date DESC, gl.creation DESC
-            """
-    data = frappe.db.sql(sql, values={
-        "filter_company": filters['filter_company'],
-        "filter_from_date": filters['filter_from_date'],
-        "filter_to_date": filters['filter_to_date'],
-        "filter_accounts": filters.get('filter_accounts'),
-        "status_id_key": "ACC-%"
-    }, as_dict=1)
-    frappe.db.rollback()
+        data = frappe.db.sql(sql, values={
+            "filter_company": filters['filter_company'],
+            "filter_from_date": filters['filter_from_date'],
+            "filter_to_date": filters['filter_to_date'],
+            "filter_accounts": filters.get('filter_accounts'),
+            "status_id_key": "ACC-%"
+        }, as_dict=1)
+    finally:
+        frappe.db.rollback()
     return columns, data
 
 
