@@ -79,8 +79,7 @@ def get_columns():
         {
             "label": _("Transaction ID"),
             "fieldname": "id",
-            "fieldtype": "Link",
-            "options": "DocType",
+            "fieldtype": "Data",
             "width": 250
         },
         {
