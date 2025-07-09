@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"cKr-gK1BN-\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Lava Reports</span>\",\"col\":12}},{\"id\":\"kJoRMb1naq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Forecasted Transactions Report\",\"col\":3}}]",
+ "content": "[{\"id\":\"cKr-gK1BN-\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Lava Reports</span>\",\"col\":12}},{\"id\":\"kJoRMb1naq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Forecasted Transactions Report\",\"col\":4}},{\"id\":\"L6jZE2pr5u\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Unposted Transactions\",\"col\":4}}]",
  "creation": "2024-10-13 11:49:11.656304",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Lava Reports",
  "links": [],
- "modified": "2024-10-15 14:12:13.048187",
+ "modified": "2025-07-09 09:17:21.861950",
  "modified_by": "Administrator",
  "module": "lava_reports",
  "name": "Lava Reports",
@@ -40,6 +40,15 @@
    "doc_view": "List",
    "label": "Forecasted Transactions Report",
    "link_to": "Forecasted Transactions Report",
+   "report_ref_doctype": "Journal Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Unposted Transactions",
+   "link_to": "Unposted Transactions",
+   "report_ref_doctype": "Sales Invoice",
    "type": "Report"
   }
  ],
