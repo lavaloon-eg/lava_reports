@@ -117,7 +117,12 @@ def get_summary(data):
     for row in data:
         summary[row.get("type")] += 1
 
-    summary_rows = []
+    summary_rows = [
+        {
+            "label": _("Total Number of Transactions"),
+            "value": len(data),
+        }
+    ]
 
     for transaction_type in DOC_TYPES:
         summary_rows.append({
