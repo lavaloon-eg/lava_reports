@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2025-07-09 12:09:13.375748",
+ "modified": "2025-07-09 18:11:00.939516",
  "modified_by": "Administrator",
  "module": "lava_reports",
  "name": "Unposted Transactions",
@@ -25,6 +25,12 @@
   },
   {
    "role": "Accounts User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Sales User"
   }
  ],
  "timeout": 0
