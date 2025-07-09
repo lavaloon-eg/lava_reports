@@ -1,0 +1,56 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"cKr-gK1BN-\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Lava Reports</span>\",\"col\":12}},{\"id\":\"kJoRMb1naq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Forecasted Transactions Report\",\"col\":4}},{\"id\":\"L6jZE2pr5u\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Unposted Transactions\",\"col\":4}}]",
+ "creation": "2024-10-13 11:49:11.656304",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Lava Reports",
+ "links": [],
+ "modified": "2025-07-09 09:17:21.861950",
+ "modified_by": "Administrator",
+ "module": "lava_reports",
+ "name": "Lava Reports",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Auditor"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Forecasted Transactions Report",
+   "link_to": "Forecasted Transactions Report",
+   "report_ref_doctype": "Journal Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Unposted Transactions",
+   "link_to": "Unposted Transactions",
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Report"
+  }
+ ],
+ "title": "Lava Reports"
+}
