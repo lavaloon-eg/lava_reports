@@ -15,7 +15,9 @@ DOC_TYPES = [
     "Purchase Order",
     "Purchase Receipt",
     "Purchase Invoice",
-    "Payment Entry"
+    "Payment Entry",
+    "Journal Entry",
+    "Exchange Rate Revaluation"
 ]
 
 def execute(filters=None):
