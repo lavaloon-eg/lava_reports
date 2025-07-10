@@ -6,6 +6,10 @@ to a section with the version name.
 
 ## Pending Changes
 
+* Update `Unposted Transactions` report:
+  * Add new doctypes (`Exchange Rate Revaluation`, `Journal Entry`)
+  * Display `All` instead of empty value in `Transaction Type` filter.
+
 ## 0.1.0
 
 * Add `Forecasted Transactions` Report.

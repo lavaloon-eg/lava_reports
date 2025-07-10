@@ -15,15 +15,17 @@ frappe.query_reports["Unposted Transactions"] = {
 			"label": __("Transaction Type"),
 			"fieldtype": "Select",
 			"options": [
-				"",
-				"Quotation",
-				"Sales Order",
-				"Delivery Note",
-				"Sales Invoice",
-				"Purchase Order",
-				"Purchase Receipt",
-				"Purchase Invoice",
-				"Payment Entry"
+				{ "label": "All", "value": "" },
+				{ "label": "Quotation", "value": "Quotation" },
+				{ "label": "Sales Order", "value": "Sales Order" },
+				{ "label": "Delivery Note", "value": "Delivery Note" },
+				{ "label": "Sales Invoice", "value": "Sales Invoice" },
+				{ "label": "Purchase Order", "value": "Purchase Order" },
+				{ "label": "Purchase Receipt", "value": "Purchase Receipt" },
+				{ "label": "Purchase Invoice", "value": "Purchase Invoice" },
+				{ "label": "Payment Entry", "value": "Payment Entry" },
+				{ "label": "Journal Entry", "value": "Journal Entry" },
+				{ "label": "Exchange Rate Revaluation", "value": "Exchange Rate Revaluation" }
 			],
 			"reqd": 0
 		}
