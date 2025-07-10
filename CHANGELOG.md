@@ -6,6 +6,8 @@ to a section with the version name.
 
 ## Pending Changes
 
+## 0.1.0
+
 * Add `Forecasted Transactions` Report.
 * Add `Lava Reports` Workspace.
 * Add `Unposted Transactions` Report.
