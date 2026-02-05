@@ -2,67 +2,56 @@
 
 ## Objective
 
-Track who **created** or **updated** any document in Frappe for **all doctypes**, without using `track_changes`.
+Track who **created** or **updated** for **selected doctypes** and **specific users**.
 
 ---
 
-## Doctype
+## Settings Doctype
 
-**Name:** Lava Audit Log
+### Lava Report Settings (Single)
 
-**Fields:**
+#### Child Tables
 
-- Doctype (Link → DocType)
-- Document Name (Data)
-- Action (Select: Create, Update)
-- User (Link → User)
-- Timestamp (Datetime)
+- **Tracked Users** User (Link → User)
+
+- **Tracked Documents** Document Type (Link → DocType)
+
+#### Behavior Rules
+
+- If *Tracked Documents* is empty → **do not log anything**
+- If *Tracked Users* is empty → **do not log anything**
+- Settings loaded once per request (cached)
+
+---
+
+## Audit Log Doctype
+
+### Lava Audit Log
+
+| Field         | Type                   |
+|---------------|------------------------|
+| Doctype       | Link → DocType         |
+| Document Name | Data                   |
+| Action        | Select (Create, Update)|
+| User          | Link → User            |
+| Timestamp     | Datetime               |
+
+#### Permissions
+
+- No Create / Update / Delete
+- Read-only
+- Visible only via report
 
 ---
 
 ## Hooks
 
-Applied to all doctypes:
+### Applied Globally
 
-- `on_update` → log Create/Update (Check if new doc or not)
-
-Exclude logging the **Lava Audit Log** doctype itself.
-
----
-
-## Logging Logic
-
-On every create or update:
-
-- Insert one record into **Lava Audit Log**
-- Store doctype, document name, action, user, timestamp
-
----
-
-## Report
-
-**Name:** Lava Audit Report  
-**Type:** Query Report
-
-**Filters:**
-
-- Date range (mandatory)
-- Document Type (optional)
-- User (optional)
-
-**Output Columns:**
-
-- Document Type
-- Document Reference
-- Action
-- User
-- Timestamp
-
----
-
-## Security
-
-- Lava Audit Log is read-only
-- Report access limited to system manager roles
-
----
+```python
+doc_events = {
+  "*": {
+    "on_update": "lava_report.audit.log_document_activity"
+  }
+}
+```
