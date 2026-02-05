@@ -30,7 +30,7 @@ Track who **created**, **updated** or **deleted** for **selected doctypes** and 
 
 | Field         | Type                           |
 |---------------|--------------------------------|
-| Doctype       | Link → DocType                 |
+| Doctype       | Data                           |
 | Document Name | Data                           |
 | Action        | Select (Create, Update, Delete)|
 | User          | Link → User                    |
