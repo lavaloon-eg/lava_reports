@@ -2,7 +2,7 @@
 
 ## Objective
 
-Track who **created** or **updated** for **selected doctypes** and **specific users**.
+Track who **created**, **updated** or **deleted** for **selected doctypes** and **specific users**.
 
 ---
 
@@ -28,13 +28,13 @@ Track who **created** or **updated** for **selected doctypes** and **specific us
 
 ### Lava Audit Log
 
-| Field         | Type                   |
-|---------------|------------------------|
-| Doctype       | Link → DocType         |
-| Document Name | Data                   |
-| Action        | Select (Create, Update)|
-| User          | Link → User            |
-| Timestamp     | Datetime               |
+| Field         | Type                           |
+|---------------|--------------------------------|
+| Doctype       | Link → DocType                 |
+| Document Name | Data                           |
+| Action        | Select (Create, Update, Delete)|
+| User          | Link → User                    |
+| Timestamp     | Datetime                       |
 
 #### Permissions
 
@@ -52,6 +52,7 @@ Track who **created** or **updated** for **selected doctypes** and **specific us
 doc_events = {
   "*": {
     "on_update": "lava_report.audit.log_document_activity"
+    "on_trash": "lava_report.audit.log_document_activity"
   }
 }
 ```
