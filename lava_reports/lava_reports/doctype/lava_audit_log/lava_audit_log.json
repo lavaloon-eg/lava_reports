@@ -1,6 +1,5 @@
 {
  "actions": [],
- "allow_rename": 1,
  "creation": "2026-02-10 11:33:42.437110",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -54,7 +53,7 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-11 09:19:29.832279",
+ "modified": "2026-02-11 16:17:08.187847",
  "modified_by": "Administrator",
  "module": "lava_reports",
  "name": "Lava Audit Log",

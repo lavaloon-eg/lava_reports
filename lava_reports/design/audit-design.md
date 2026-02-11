@@ -19,7 +19,7 @@ Track who **created**, **updated** or **deleted** for **selected doctypes** and 
 #### Behavior Rules
 
 - If *Tracked Documents* is empty → **do not log anything**
-- If *Tracked Users* is empty → **do not log anything**
+- If *Tracked Users* is empty → **create a log**
 - Settings loaded once per request (cached)
 
 ---

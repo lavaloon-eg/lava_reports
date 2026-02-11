@@ -1,6 +1,8 @@
 import frappe
 from frappe import _
 from frappe.utils import get_datetime
+from frappe.query_builder.functions import DateFormat
+
 
 
 def execute(filters=None):
@@ -28,13 +30,13 @@ def get_data(filters, from_date, to_date):
     log = frappe.qb.DocType('Lava Audit Log')
     user = frappe.qb.DocType('User')
 
-    user_filter = filters.get('user')
+    users_filter = filters.get('users')
 
     query = (
         frappe.qb.from_(log)
         .select(
             log.name.as_('id'),
-            log.date.as_('date'),
+            DateFormat(log.date, '%a, %d %b %Y').as_('date'),
             log.user,
             user.full_name,
             log.document_type,
@@ -47,16 +49,10 @@ def get_data(filters, from_date, to_date):
         .where(log.date <= to_date)
     )
 
-    if user_filter:
-        query = query.where(log.user.isin(user_filter))
+    if users_filter:
+        query = query.where(log.user.isin(users_filter))
 
-    result = query.run(as_dict=True)
-
-    for row in result:
-        dt = get_datetime(row.get('date'))
-        row['date'] = dt.strftime('%a, %d %b %Y')
-
-    return result
+    return query.run(as_dict=True)
 
 def get_columns():
     return [

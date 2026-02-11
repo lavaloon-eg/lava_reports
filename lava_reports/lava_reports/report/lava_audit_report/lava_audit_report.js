@@ -18,7 +18,7 @@ frappe.query_reports['Lava Audit Report'] = {
             'default': frappe.datetime.get_today()
         },
         {
-            'fieldname': 'user',
+            'fieldname': 'users',
             'label': __('User'),
             'fieldtype': 'MultiSelectList',
 			get_data: function(txt) {
