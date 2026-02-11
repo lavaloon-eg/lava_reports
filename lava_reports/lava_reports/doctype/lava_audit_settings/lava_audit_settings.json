@@ -10,12 +10,14 @@
  ],
  "fields": [
   {
+   "allow_bulk_edit": 1,
    "fieldname": "tracked_doctypes",
    "fieldtype": "Table",
    "label": "Tracked Doctypes",
    "options": "Lava Tracked Doctype"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "trackers",
    "fieldtype": "Table",
    "label": "Trackers",
@@ -26,7 +28,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-02-10 15:34:03.201425",
+ "modified": "2026-02-11 12:24:41.716477",
  "modified_by": "Administrator",
  "module": "lava_reports",
  "name": "Lava Audit Settings",
