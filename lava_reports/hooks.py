@@ -68,7 +68,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "lava_reports.install.before_install"
-# after_install = "lava_reports.install.after_install"
+after_install = "lava_reports.install.after_install"
 
 # Uninstallation
 # ------------
@@ -122,13 +122,12 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+    "*": {
+        "on_update": "lava_reports.audit.log_document_activity",
+        "on_trash": "lava_reports.audit.log_document_activity"
+    }
+}
 
 # Scheduled Tasks
 # ---------------
@@ -221,7 +220,7 @@ app_license = "mit"
 # ]
 
 # Automatically update python controller files with type annotations for this app.
-# export_python_type_annotations = True
+export_python_type_annotations = True
 
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs

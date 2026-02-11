@@ -4,3 +4,4 @@
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
+lava_reports.patches._2026_02_11_add_audit_settings # 2026-02-11 10:00

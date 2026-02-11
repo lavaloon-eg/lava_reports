@@ -51,7 +51,7 @@ Track who **created**, **updated** or **deleted** for **selected doctypes** and 
 ```python
 doc_events = {
   "*": {
-    "on_update": "lava_report.audit.log_document_activity"
+    "on_update": "lava_report.audit.log_document_activity",
     "on_trash": "lava_report.audit.log_document_activity"
   }
 }
