@@ -9,6 +9,7 @@ to a section with the version name.
 * Update `Unposted Transactions` report:
   * Add new doctypes (`Exchange Rate Revaluation`, `Journal Entry`)
   * Display `All` instead of empty value in `Transaction Type` filter.
+* Add audit tracking.
 
 ## 0.1.0
 
